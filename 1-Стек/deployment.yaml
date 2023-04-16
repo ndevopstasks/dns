@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+  # created namespace demo to seperate our environment from other projects/teams 
+  namespace: demo
+spec:
+  # lounches 2 pods for high availability
+  replicas: 2
+  selector:
+    # replicaset will be executed for the pods with demo-app labels
+    matchLabels:
+      app: demo-app      
+  # Pod specifications
+  template:
+    metadata:
+      labels:
+      # pod's identification for replica set
+        app: demo-app
+    spec:
+      # container specifications
+      containers:
+        # container name
+      - name: demo-app
+      # location of repository/container image
+        image: mrdockernnm/dns:latest
+        resources:
+          # for normal usage
+          requests:
+            memory: "500Mi"
+            cpu: "250m"
+          # max allowed
+          limits:
+            memory: "500Mi"
+            cpu: "500m"                        
+        ports:
+        - containerPort: 53
+        
